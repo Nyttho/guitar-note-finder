@@ -22,16 +22,6 @@ This project listens to the user's microphone, detects the pitch (frequency) of 
 - `utils.js` — helper functions (media stream creation, random selection).
 - `modules/pitch.js` — pitch detection and frequency→note utilities.
 
-## Run locally
-A static server is required to use `getUserMedia` reliably in some browsers. From the project root you can run a simple Python server:
-
-```bash
-# Python 3
-python -m http.server 8000
-```
-
-Then open `http://localhost:8000` in a modern browser (Chrome, Edge, Firefox). Use the latest stable version for best Web Audio API support.
-
 ## Quick usage
 1. Open the app in your browser.
 2. Click `Autoriser le micro` (or your browser's permission prompt) to allow microphone access — the choice is saved.
