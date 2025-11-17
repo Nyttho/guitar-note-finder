@@ -132,6 +132,130 @@ button {
   min-height: 46px;
 }
 
+/* Richer detected note layout */
+.detected-main {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+.detected-note__name {
+  font-size: 36px;
+  font-weight: 800;
+  letter-spacing: -1px;
+  color: #e6eef8;
+}
+.detected-note__meta {
+  font-size: 13px;
+  color: #9fb0c8;
+  margin-top: 6px;
+}
+.detected-meter {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 10px;
+}
+.detected-meter__bar {
+  flex: 1 1 auto;
+  height: 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.03);
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.02);
+}
+.detected-meter__fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #06b6d4, #3dd9b8);
+  transition: width 140ms linear, background 200ms ease;
+}
+.detected-cents {
+  min-width: 88px;
+  text-align: right;
+  color: #cfe8ff;
+  font-weight: 600;
+}
+.detected-status {
+  margin-top: 10px;
+  height: 28px;
+}
+
+/* status styles */
+.detected-note.status-correct {
+  background: linear-gradient(
+    90deg,
+    rgba(124, 252, 0, 0.12),
+    rgba(167, 243, 208, 0.06)
+  );
+  border-color: rgba(124, 252, 0, 0.12);
+}
+.detected-note.status-correct .detected-meter__fill {
+  background: linear-gradient(90deg, #7cfc00, #a7f3d0);
+}
+.detected-note.status-partial {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 215, 0, 0.06),
+    rgba(255, 215, 0, 0.02)
+  );
+  border-color: rgba(255, 215, 0, 0.08);
+}
+.detected-note.status-incorrect {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 99, 71, 0.03),
+    rgba(255, 99, 71, 0.01)
+  );
+  border-color: rgba(255, 99, 71, 0.06);
+}
+
+/* subtle icon/text for status */
+.detected-status .icon {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-weight: 700;
+}
+.detected-note.status-correct .detected-status .icon {
+  background: rgba(124, 252, 0, 0.12);
+  color: #032022;
+}
+.detected-note.status-partial .detected-status .icon {
+  background: rgba(255, 215, 0, 0.12);
+  color: #6b3f00;
+}
+.detected-note.status-incorrect .detected-status .icon {
+  background: rgba(255, 99, 71, 0.12);
+  color: #3b0600;
+}
+
+/* success pulse animation for feedback */
+.pulse-success {
+  animation: pulse-success 700ms ease-out;
+}
+@keyframes pulse-success {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(124, 252, 0, 0.9);
+  }
+  40% {
+    transform: scale(1.02);
+    box-shadow: 0 8px 30px 6px rgba(124, 252, 0, 0.15);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(124, 252, 0, 0);
+  }
+}
+
+.note-success {
+  color: #032022;
+  background: linear-gradient(90deg, #7cfc00, #a7f3d0);
+  font-weight: 800;
+}
+
 .tolerance-row {
   display: flex;
   gap: 8px;

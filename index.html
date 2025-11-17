@@ -40,9 +40,9 @@
               min="0"
               max="100"
               step="1"
-              value="20"
+              value="30"
             />
-            <span id="tolerance-value">20</span>
+            <span id="tolerance-value">30</span>
           </div>
           <div class="tolerance-row">
             <label for="reference-a">Référence A4 (Hz):</label>
@@ -62,7 +62,19 @@
         </div>
       </div>
       <div id="note-display" class="note-display"></div>
-      <div id="detected-note" class="detected-note"></div>
+      <div id="detected-note" class="detected-note">
+        <div class="detected-main">
+          <div class="detected-note__name">—</div>
+          <div class="detected-note__meta">—</div>
+        </div>
+        <div class="detected-meter">
+          <div class="detected-meter__bar">
+            <div class="detected-meter__fill" style="width: 0%"></div>
+          </div>
+          <div class="detected-cents">—</div>
+        </div>
+        <div class="detected-status" aria-hidden="true"></div>
+      </div>
     </div>
   </body>
 </html>

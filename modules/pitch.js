@@ -58,6 +58,26 @@ function createPitchDetector(sampleRate) {
   };
 }
 
+const ENHARMONICS = {
+  C: ["C"],
+  "C#": ["C#", "Db"],
+  Db: ["C#", "Db"],
+  D: ["D"],
+  "D#": ["D#", "Eb"],
+  Eb: ["D#", "Eb"],
+  E: ["E"],
+  F: ["F"],
+  "F#": ["F#", "Gb"],
+  Gb: ["F#", "Gb"],
+  G: ["G"],
+  "G#": ["G#", "Ab"],
+  Ab: ["G#", "Ab"],
+  A: ["A"],
+  "A#": ["A#", "Bb"],
+  Bb: ["A#", "Bb"],
+  B: ["B"],
+};
+
 function freqToNoteData(frequency, referenceA = 440) {
   const noteNum = 12 * Math.log2(frequency / referenceA) + 69;
   const rounded = Math.round(noteNum);
@@ -83,6 +103,7 @@ function freqToNoteData(frequency, referenceA = 440) {
   return {
     name: `${sharpNotes[noteIndex]}${octave}`,
     simpleName: sharpNotes[noteIndex],
+    enharmonics: ENHARMONICS[sharpNotes[noteIndex]] || [sharpNotes[noteIndex]],
     octave,
     cents,
     midi: rounded,
@@ -94,31 +115,23 @@ function areNotesEquivalent(note1, note2) {
   const n1 = note1.replace(/\d+/g, "");
   const n2 = note2.replace(/\d+/g, "");
 
-  const enharmonics = {
-    C: ["C"],
-    "C#": ["C#", "Db"],
-    Db: ["C#", "Db"],
-    D: ["D"],
-    "D#": ["D#", "Eb"],
-    Eb: ["D#", "Eb"],
-    E: ["E"],
-    F: ["F"],
-    "F#": ["F#", "Gb"],
-    Gb: ["F#", "Gb"],
-    G: ["G"],
-    "G#": ["G#", "Ab"],
-    Ab: ["G#", "Ab"],
-    A: ["A"],
-    "A#": ["A#", "Bb"],
-    Bb: ["A#", "Bb"],
-    B: ["B"],
-  };
-
-  for (const key in enharmonics) {
-    if (enharmonics[key].includes(n1) && enharmonics[key].includes(n2))
+  for (const key in ENHARMONICS) {
+    if (ENHARMONICS[key].includes(n1) && ENHARMONICS[key].includes(n2))
       return true;
   }
   return false;
 }
 
-export { createPitchDetector, freqToNoteData, areNotesEquivalent };
+function getEnharmonicNames(simple) {
+  // return array of enharmonic names for given simple name
+  return ENHARMONICS[simple]
+    ? Array.from(new Set(ENHARMONICS[simple]))
+    : [simple];
+}
+
+export {
+  createPitchDetector,
+  freqToNoteData,
+  areNotesEquivalent,
+  getEnharmonicNames,
+};
