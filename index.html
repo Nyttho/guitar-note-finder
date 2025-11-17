@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <script src="script.js" defer type="module"></script>
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="app">
+      <header class="app__header">
+        <h1>Guitar Note Finder</h1>
+        <p class="muted">
+          Assure-toi d'être accordé en La 440 Hz avant de commencer.
+        </p>
+      </header>
+      <div>
+        <p for="">Selectionne les cordes que tu veux utiliser :</p>
+        <div class="string-selector">
+          <div id="E" class="string-selector__box selected">E</div>
+          <div id="A" class="string-selector__box selected">A</div>
+          <div id="D" class="string-selector__box selected">D</div>
+          <div id="G" class="string-selector__box selected">G</div>
+          <div id="B" class="string-selector__box selected">B</div>
+          <div id="e" class="string-selector__box selected">e</div>
+        </div>
+      </div>
+      <div style="display: flex; gap: 12px; align-items: center">
+        <button id="permission-button">Autoriser le micro</button>
+        <button id="start-button">Commencer</button>
+      </div>
+      <div
+        style="margin-top: 10px; display: flex; align-items: center; gap: 8px"
+      >
+        <label for="tolerance-range">Tolérance (cents):</label>
+        <input
+          id="tolerance-range"
+          type="range"
+          min="0"
+          max="100"
+          step="1"
+          value="20"
+        />
+        <span id="tolerance-value">20</span>
+      </div>
+      <div
+        style="margin-top: 8px; display: flex; align-items: center; gap: 8px"
+      >
+        <label for="reference-a">Référence A4 (Hz):</label>
+        <input
+          id="reference-a"
+          type="number"
+          min="400"
+          max="480"
+          step="0.1"
+          value="440"
+        />
+      </div>
+      <div
+        style="margin-top: 8px; display: flex; align-items: center; gap: 8px"
+      >
+        <div id="score-display">Succès: 0</div>
+        <button id="reset-score">Réinitialiser</button>
+      </div>
+      <div id="note-display" class="note-display"></div>
+      <div id="detected-note" class="detected-note"></div>
+    </div>
+  </body>
+</html>
