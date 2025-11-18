@@ -70,16 +70,36 @@ if (savedMic === "granted") {
   permissionButton.disabled = true;
 }
 
+// cache du stream/audioContext si l'utilisateur a déjà autorisé
+let cachedStreamData = null;
+
 permissionButton.addEventListener("click", async () => {
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+    alert(
+      "Votre navigateur ne supporte pas l'accès au micro. Utilisez un navigateur moderne en HTTPS."
+    );
+    return;
+  }
+
   try {
-    await navigator.mediaDevices.getUserMedia({ audio: true });
+    // Pré-crée le flux et l'audioContext pour éviter des appels séparés sur mobile
+    const streamData = await getLocalStream();
+    if (!streamData) throw new Error("no-stream");
+    cachedStreamData = streamData;
+    // resume audio context (nécessaire sur certains mobiles)
+    try {
+      await streamData.audioContext.resume();
+    } catch (e) {
+      // ignore
+    }
     localStorage.setItem("micPermission", "granted");
     permissionButton.textContent = "Micro : autorisé";
     permissionButton.disabled = true;
   } catch (err) {
     localStorage.setItem("micPermission", "denied");
+    console.error("Permission micro échouée:", err);
     alert(
-      "Autorisation micro refusée — l'application ne peut pas fonctionner."
+      "Autorisation micro refusée — l'application ne peut pas fonctionner. Assurez-vous d'autoriser le micro et d'utiliser HTTPS."
     );
   }
 });
@@ -100,13 +120,20 @@ startButton.addEventListener("click", async () => {
 
   randomNoteDisplay.textContent = `Joue la note ${randomNote} sur la corde de ${randomString}!`;
 
-  const streamData = await getLocalStream();
+  // reuse cached streamData if permission button was used
+  const streamData = cachedStreamData || (await getLocalStream());
   if (!streamData) {
     detectedNoteDisplay.textContent = "Impossible d'accéder au micro.";
     return;
   }
 
   const { analyser, dataArray, audioContext } = streamData;
+  // ensure audio context is running (mobile browsers may suspend it)
+  try {
+    if (audioContext.state === "suspended") await audioContext.resume();
+  } catch (e) {
+    console.warn("Impossible de démarrer/resumer audioContext:", e);
+  }
   const detector = createPitchDetector(audioContext.sampleRate);
   // protection contre vibrato: nécessite de tenir la note correcte pendant un délai
   let lastResult = null; // 'correct' | 'partial' | 'incorrect' | null
